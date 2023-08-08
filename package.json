@@ -1,0 +1,12 @@
+{
+  "name": "directory-file-list",
+  "version": "0.20",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
