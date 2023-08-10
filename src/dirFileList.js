@@ -6,14 +6,11 @@ const process = require("process")
 
 async function dirFileList(rootPath, extensions, options) {
     // ^INITIALIZE
-    console.log("dirFileList top")
 	let settings = options || {}
 	settings.recursive = settings.recursive ?? true
     settings.exclude_filenames = options.exclude_filenames ?? []
     settings.exclude_directories = options.exclude_directories ?? []
     settings.max_depth = settings.max_depth ?? 15
-
-    console.log(settings.exclude_filenames)
 
     let fileList = await filesDirs(rootPath, rootPath, 1, settings)
 
@@ -45,8 +42,6 @@ async function filesDirs(rootPath, currentPath, depth, settings) {
     if (settings.exclude_directories.includes(path.basename(currentPath))) return arrResult
 
     let a = await getDirectoryList(currentPath)
-
-    console.log("filesDirs(" + currentPath + ")")
 
     let arrFileStatsPromises = a.map(cv => getFileStats(currentPath + "\\" + cv))
 
@@ -114,7 +109,6 @@ function getFileStats(file) {
         resolve( f )
     })
 }
-
 
 
 
