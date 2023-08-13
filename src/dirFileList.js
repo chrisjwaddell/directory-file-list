@@ -7,17 +7,37 @@ const process = require("process")
 async function dirFileList(rootPath, extensions, options) {
     // ^INITIALIZE
 	let settings = options || {}
+    settings.extensions = extensions ?? []
 	settings.recursive = settings.recursive ?? true
     settings.exclude_filenames = options.exclude_filenames ?? []
     settings.exclude_directories = options.exclude_directories ?? []
     settings.max_depth = settings.max_depth ?? 15
 
+    let toString = Object.prototype.toString
+    if (toString.call(settings.extensions) !== "[object Array]") {
+        return Promise.reject("extensions is wrong type. It should be Array")
+    }
+    if (toString.call(settings.recursive) !== "[object Boolean]") {
+        return Promise.reject("recursive is wrong type. It should be Boolean")
+    }
+    if (toString.call(settings.exclude_filenames) !== "[object Array]") {
+        return Promise.reject("exclude_filenames is wrong type. It should be Array")
+    }
+    if (toString.call(settings.exclude_directories) !== "[object Array]") {
+        return Promise.reject("exclude_directories is wrong type. It should be Array")
+    }
+    if (toString.call(settings.max_depth) !== "[object Number]") {
+        return Promise.reject("max_depth is wrong type. It should be Number")
+    }
+
     let fileList = await filesDirs(rootPath, rootPath, 1, settings)
 
     // filter out extensions
     let extList = []
-    if (extensions.length) {
-        extList = fileList.filter(file => extensions.includes(file.extension) )
+    if (settings.extensions.length) {
+        extList = fileList.filter(file => {
+            return settings.extensions.includes(file.extension)
+        })
     } else {
         extList = fileList
     }
@@ -35,7 +55,6 @@ async function dirFileList(rootPath, extensions, options) {
 
 
 async function filesDirs(rootPath, currentPath, depth, settings) {
-
     let arrResult = []
 
     // if this current directory is in the exclude_directories list, return
@@ -43,12 +62,12 @@ async function filesDirs(rootPath, currentPath, depth, settings) {
 
     let a = await getDirectoryList(currentPath)
 
-    let arrFileStatsPromises = a.map(cv => getFileStats(currentPath + "\\" + cv))
+    let arrFileStatsPromises = a.map(cv => getFileStats(path.join(currentPath, cv)))
 
     let arrFileStats = await Promise.all(arrFileStatsPromises)
 
     let arrFileStatsNeeded = arrFileStats.map((cv, i) => {
-        return { ...getFileStatsNeeded(cv, depth, currentPath + "\\" + a[i], rootPath), filepath: currentPath + "\\" + a[i], file: cv.isFile() }
+        return { ...getFileStatsNeeded(cv, depth, path.join(currentPath, a[i]), rootPath), filepath: path.join(currentPath, a[i]), file: cv.isFile() }
     })
 
     const files = arrFileStatsNeeded.filter(item => item.file)
