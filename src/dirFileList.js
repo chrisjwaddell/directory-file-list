@@ -60,14 +60,14 @@ async function filesDirs(rootPath, currentPath, depth, settings) {
     // if this current directory is in the exclude_directories list, return
     if (settings.exclude_directories.includes(path.basename(currentPath))) return arrResult
 
-    let a = await getDirectoryList(currentPath)
+    let dirList = await getDirectoryList(currentPath)
 
-    let arrFileStatsPromises = a.map(cv => getFileStats(path.join(currentPath, cv)))
+    let arrFileStatsPromises = dirList.map(cv => getFileStats(path.join(currentPath, cv)))
 
     let arrFileStats = await Promise.all(arrFileStatsPromises)
 
     let arrFileStatsNeeded = arrFileStats.map((cv, i) => {
-        return { ...getFileStatsNeeded(cv, depth, path.join(currentPath, a[i]), rootPath), filepath: path.join(currentPath, a[i]), file: cv.isFile() }
+        return { ...getFileStatsNeeded(cv, depth, path.join(currentPath, dirList[i]), rootPath), filepath: path.join(currentPath, dirList[i]), file: cv.isFile() }
     })
 
     const files = arrFileStatsNeeded.filter(item => item.file)

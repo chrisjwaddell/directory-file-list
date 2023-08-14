@@ -1,5 +1,5 @@
 // Usage: node ./examples/write-list-to-file.js "/home" ".txt"
-const dirFileList = require("../src/dirFileList.js");
+const { dirFileList } = require("../src/dirFileList.js");
 const fs = require("fs");
 const process = require("process");
 const path = require("path")
