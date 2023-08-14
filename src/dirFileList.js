@@ -112,7 +112,7 @@ function getDirectoryList( directory ) {
 
 
 function getFileStatsNeeded(filestats, depth, filepath, rootPath) {
-    return { size: filestats.size, mode: filestats.mode, access_time: filestats.atime, modified_time: filestats.mtime, status_change_time: filestats.ctime, birthtime: filestats.birthtime, depth, filename: path.basename(filepath), relative: filepath.replace(rootPath + "\\", ""), extension: path.extname(filepath) }
+    return { size: filestats.size, mode: filestats.mode, access_time: filestats.atime, modified_time: filestats.mtime, status_change_time: filestats.ctime, birthtime: filestats.birthtime, depth, filename: path.basename(filepath), relative: filepath.replace(rootPath + "\\", ""), dir: path.dirname(filepath), extension: path.extname(filepath) }
 }
 
 
@@ -130,5 +130,4 @@ function getFileStats(file) {
 }
 
 
-
-module.exports = dirFileList
+module.exports = { dirFileList, getFileStats, getDirectoryList }
