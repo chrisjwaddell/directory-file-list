@@ -1,7 +1,6 @@
 const fs = require('node:fs/promises');
 const st = require('node:fs/promises');
 const path = require("path")
-const process = require("process")
 
 
 async function dirFileList(rootPath, extensions, options) {
@@ -42,15 +41,7 @@ async function dirFileList(rootPath, extensions, options) {
         extList = fileList
     }
 
-    // filter out exclude_filenames
-    let afterExclFiles = []
-    if (options.exclude_filenames.length) {
-        afterExclFiles = extList.filter(file => !options.exclude_filenames.includes(file.filename) )
-    } else {
-        afterExclFiles = extList
-    }
-
-    return afterExclFiles
+    return extList
 }
 
 
@@ -62,12 +53,33 @@ async function filesDirs(rootPath, currentPath, depth, settings) {
 
     let dirList = await getDirectoryList(currentPath)
 
-    let arrFileStatsPromises = dirList.map(cv => getFileStats(path.join(currentPath, cv)))
+    // filter out exclude_filenames
+    let afterExclFiles = []
 
-    let arrFileStats = await Promise.all(arrFileStatsPromises)
+    if (settings.exclude_filenames.length) {
+        afterExclFiles = dirList.filter(file => settings.exclude_filenames.includes(file) === false)
+    } else {
+        afterExclFiles = dirList
+    }
+
+
+    let arrFileStatsPromises = afterExclFiles.map(cv => getFileStatsWrapper(currentPath, cv, rootPath, depth))
+
+    let arrFileStats = await Promise.all(arrFileStatsPromises).catch(err => {
+        console.log(err)
+    })
+
 
     let arrFileStatsNeeded = arrFileStats.map((cv, i) => {
-        return { ...getFileStatsNeeded(cv, depth, path.join(currentPath, dirList[i]), rootPath), filepath: path.join(currentPath, dirList[i]), file: cv.isFile() }
+        let f
+        try {
+            f = cv.isFile()
+        }
+        catch {
+            f = {}
+        }
+
+        return { ...getFileStatsNeeded(cv, depth, path.join(currentPath, afterExclFiles[i]), rootPath), filepath: path.join(currentPath, afterExclFiles[i]), file: f }
     })
 
     const files = arrFileStatsNeeded.filter(item => item.file)
@@ -124,10 +136,23 @@ function getFileStats(file) {
                 reject( err )
             }
         )
-
         resolve( f )
     })
 }
 
+// If the filesystem can't return stat,
+// return an simple object
+// To avoid Promise.all failing
+async function getFileStatsWrapper(currentPath, filename, rootPath, depth) {
+    let r = await getFileStats(path.join(currentPath,filename))
+        .then(result => result)
+        .catch(err => {
+            return { filename, depth, filepath: path.join(currentPath, filename), dir: currentPath }
+        })
 
-module.exports = { dirFileList, getFileStats, getDirectoryList }
+    return r
+}
+
+
+
+module.exports = { dirFileList, getDirectoryList }
