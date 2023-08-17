@@ -3,7 +3,7 @@
 Directory-File-list returns an array of files in a directory matching the extension criteria you give it. It returns a promise.
 
 It returns an array of file statistics in an object:
-``
+```
 [
   {
     "size": 23,
@@ -21,13 +21,13 @@ It returns an array of file statistics in an object:
     "file": true
   }
 ]
-``
+```
 
 
 
 Supply it with a root directory and an array of file extensions.
 
-``
+```
 const { dirFileList } = require("../src/dirFileList.js");
 
 const textFiles = [ ".txt", ".md" ]
@@ -49,6 +49,6 @@ const textFiles = [ ".txt", ".md" ]
     })
 
 })()
-``
+```
 
 
