@@ -68,13 +68,16 @@ The root directory you want to search from.
 
 ## extensions
 An array of file extensions. An empty array meaning all extensions. It must be exact ie dot infront.
-eg 
+eg
+<br>
 ``
 [ ".txt", ".pdf" ]
 ``
 
+``
 const javascriptFiles = [ ".js", ".mjs", ".cjs", ".jsx", ".ts" ]
 const textFiles = [ ".txt", ".cvs" ]
+``
 
 For ideas of file extension groups see [Wikipedia](https://en.wikipedia.org/wiki/List_of_file_formats)
 
