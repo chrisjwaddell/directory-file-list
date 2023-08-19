@@ -143,6 +143,7 @@ function getFileStatsNeeded(filestats, depth, filepath, rootPath) {
 		relative: filepath.replace(path.resolve(rootPath) + "\\", ""),
 		dir: path.dirname(filepath),
 		extension: path.extname(filepath),
+		isFile: filestats.isFile(),
 	}
 }
 
