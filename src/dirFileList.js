@@ -2,7 +2,7 @@ const fs = require("node:fs/promises")
 const st = require("node:fs/promises")
 const path = require("path")
 
-async function dirFileList(rootPath, extensions, options) {
+async function dirFileList(rootPath, extensions, options = {}) {
 	// ^INITIALIZE
 	let settings = options || {}
 	settings.extensions = extensions ?? []
