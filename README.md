@@ -1,13 +1,8 @@
 # DIRECTORY-FILE-LIST
 
-Directory-File-list returns an array of files in a directory matching the extension criteria you give it.
+Directory-file-list returns an array of file properties in a directory matching the file extension criteria you give it. It returns a promise.
 
-Directory-File-list returns an array with a list of all file properties in a directory and also traverses each directory branch to return file properties such as size.
-
-It returns a promise.
-
-
-It returns an array of file statistics in an object:
+It returns an array of file properties in an object:
 ```
 [
   {
@@ -23,14 +18,12 @@ It returns an array of file statistics in an object:
     "dir": "E:\\directory-file-list",
     "extension": ".md",
     "filepath": "E:\\directory-file-list\\README.md",
-    "file": true
+    "isFile": true
   }
 ]
 ```
 
-
-
-Supply it with a root directory and an array of file extensions.
+Supply _directory-file-list_ with a root directory and an array of file extensions.
 
 ```
 const { dirFileList } = require("../src/dirFileList.js");
@@ -58,7 +51,7 @@ const textFiles = [ ".txt", ".md" ]
 
 
 
-dirFileList takes three arguments:
+_Directory-file-list_ takes three arguments:
 <br>
 _rootPath, extensions_ and _options_
 
@@ -90,23 +83,18 @@ The default is true.
 
 
 ### exclude_files
-Supply an array of file names. Not with a directory name in it, just file names, exact filename, you want to exclude at all depths. Just a filename with an extension.
+An array of file names to exclude. The results will exclude any files that match these exact file names at all directory depths. Just a filename with an extension.
 
 
 ### exclude_directories
-Supply an array of directories. Not a path. It will exclude the exact directory name at all depths.
+An array of directories to exclude. Not a path. The results will exclude any directories that match these exact directory names at all directory depths.
 _node-modules_, _bin_ and _dist_ are examples.
 ``
-["node_modules", "bin" ]
+["node_modules", "bin", "dist" ]
 ``
 
 
 ### max_depth
-default is 15
-
-
-
-
-
+Set a limit of how far you want to traverse down the directory list from the root directory. The default is 15.
 
 
