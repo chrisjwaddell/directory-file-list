@@ -68,10 +68,10 @@ eg
 [ ".txt", ".pdf" ]
 ``
 
-``
+```
 const javascriptFiles = [ ".js", ".mjs", ".cjs", ".jsx", ".ts" ]
 const textFiles = [ ".txt", ".cvs" ]
-``
+```
 
 For ideas of file extension groups see [Wikipedia](https://en.wikipedia.org/wiki/List_of_file_formats)
 
@@ -100,7 +100,7 @@ _node-modules_, _bin_ and _dist_ are examples.
 ### max_depth
 Set a limit of how far you want to traverse down the directory list from the root directory. The default is 15.
 
-
+<br><br>
 Exclude files and directories by the above options. They apply to all levels. If you want to be more specific, it's better to do it with the returned results.
 
 Order of files may depend on the operating system. If you a specific order of the files, you can do it to your specific needs.
