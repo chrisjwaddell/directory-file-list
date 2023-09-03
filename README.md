@@ -1,6 +1,7 @@
 # DIRECTORY-FILE-LIST
 
-Directory-file-list returns an array of file properties in a directory matching the file extension criteria you give it. It returns a promise.
+Directory-file-list returns an array of files and directories with Stats file properties in a directory matching the file extension criteria you give it. It returns a promise.
+Directory-file-list recursively goes through all sub-directories from the root directory and puts each file property into an object and returns an array of these file object properties.
 
 It returns an array of file properties in an object:
 ```
@@ -83,8 +84,10 @@ The default is true.
 
 
 ### exclude_files
-An array of file names to exclude. The results will exclude any files that match these exact file names at all directory depths. Just a filename with an extension.
-
+An array of file names to exclude. The results will exclude any files that match these exact file names at all directory depths. Just a filename with a file extension, no directory path name. Eg
+``
+[ ".gitignore", "package.json" ]
+``
 
 ### exclude_directories
 An array of directories to exclude. Not a path. The results will exclude any directories that match these exact directory names at all directory depths.
